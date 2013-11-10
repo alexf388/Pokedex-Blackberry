@@ -4,25 +4,31 @@ BASEDIR =  $$quote($$_PRO_FILE_PWD_)
 device {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/applicationui.cpp) \
-                 $$quote($$BASEDIR/src/main.cpp)
+                 $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/pokemonlist.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/applicationui.h)
+        HEADERS +=  $$quote($$BASEDIR/src/applicationui.h) \
+                 $$quote($$BASEDIR/src/pokemonlist.h)
     }
 
     CONFIG(release, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/applicationui.cpp) \
-                 $$quote($$BASEDIR/src/main.cpp)
+                 $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/pokemonlist.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/applicationui.h)
+        HEADERS +=  $$quote($$BASEDIR/src/applicationui.h) \
+                 $$quote($$BASEDIR/src/pokemonlist.h)
     }
 }
 
 simulator {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/applicationui.cpp) \
-                 $$quote($$BASEDIR/src/main.cpp)
+                 $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/pokemonlist.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/applicationui.h)
+        HEADERS +=  $$quote($$BASEDIR/src/applicationui.h) \
+                 $$quote($$BASEDIR/src/pokemonlist.h)
     }
 }
 
