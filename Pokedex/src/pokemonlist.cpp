@@ -40,10 +40,13 @@ bool PokemonList::hasChildren(const QVariantList& indexPath) {
 QVariant PokemonList::data(const QVariantList& indexPath) {
 	// TODO: Load the list from db/pokemon.csv file
 	static QString pokemon_list[6]={"Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"};
+	static QString pokemon_type[6]={"Grass, Poison", "Grass, Poison", "Grass, Poison", "Fire", "Fire", "Fire, Flying"};
 
 	int i = indexPath[0].toInt(); 		// Get the menu index
-	QString  pokemon = pokemon_list[i];	// Get the name of pokemon for this index
-	return QVariant(pokemon);			// Return the name as a QVariant object
+	QVariantMap data;
+	data["name"] = pokemon_list[i];	// Get the name of pokemon for this index
+	data["type"] = pokemon_type[i];
+	return data;			// Return the name as a QVariant object
 }
 
 PokemonList::~PokemonList() {

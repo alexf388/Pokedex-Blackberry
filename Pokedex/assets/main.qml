@@ -38,16 +38,18 @@ NavigationPane {
                 }
                 objectName: "pokemon_types"
             }
-            ListView {
-                dataModel: pokemon_list
-                onTriggered: {
+            ListView { // This is the 'view' part of the model-view-controller
+                dataModel: pokemon_list // Connect 'pokemon_list' as the 'model' for this view
+                
+                onTriggered: { // What to do when user selects an item
+                    if (indexPath.length == 1) { // this is a first level item
+                        var chosenItem = dataModel.data(indexPath);	// Get the data from dataModel
+                        var contentpage = itemPageDefinition.createObject(); // create the sub-page
 
-                    if (indexPath.length == 1) {
-                        var chosenItem = dataModel.data(indexPath);
-                        var contentpage = itemPageDefinition.createObject();
-
-                        contentpage.itemPageTitle = chosenItem
-                        nav.push(contentpage);
+                        contentpage.name = chosenItem.name // Set the properties. See property alias statements in itemPage.qml 
+                        contentpage.type = chosenItem.type
+                        // TODO: set other stats
+                        nav.push(contentpage); // Show the page
                     }
                 }
             }
