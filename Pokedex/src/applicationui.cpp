@@ -1,4 +1,4 @@
-#include "applicationui.hpp"
+#include "applicationui.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>

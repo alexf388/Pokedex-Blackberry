@@ -2,7 +2,7 @@
 
 #include <QLocale>
 #include <QTranslator>
-#include "applicationui.hpp"
+#include "applicationui.h"
 
 #include <Qt/qdeclarativedebug.h>
 
