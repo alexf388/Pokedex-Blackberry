@@ -4,6 +4,8 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/DropDown>
+#include <bb/cascades/RadioGroup>
+
 #include <iostream>
 
 #include "pokemonlist.h"
@@ -52,24 +54,32 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 		// TODO: Open types.csv file, parse the csv data and create the drop down list
 		// Remove above two lines after that is done
     }
+    else {
+    	cerr << "failed to find pokemon_types " << endl;
+    }
 
     // reset pointer to hold the UI object to zero
-    dropDown = 0;
+    RadioGroup *radio(0);
     // Search the root QML object for a control named "pokemon_types"
-    dropDown = root->findChild<DropDown *>("pokedex_languages");
+    radio = root->findChild<RadioGroup *>("pokedex_languages");
 
-    if (dropDown) { // did we succeed in getting a pointer to the drop down UI control?
-        dropDown->add(Option::create().text("English").value("9").selected(true)); // Yes. Add a new option and make it selected
-        dropDown->add(Option::create().text("Japanese").value("1")); // Add another option
+    if (radio) { // did we succeed in getting a pointer to the drop down UI control?
+    	radio->add(Option::create().text("English").value("9").selected(true)); // Yes. Add a new option and make it selected
+    	radio->add(Option::create().text("Japanese").value("1")); // Add another option
 		// TODO: Open language_name.csv file, parse the csv data and create the drop down list
 		// Remove above two lines after that is done
+    }
+    else {
+    	cerr << "failed to find pokedex_languages " << endl;
     }
     // Set created root object as the application scene
     app->setScene(root);
 }
 
 void ApplicationUI::typeSelected(int type) {
-	cerr << "In typeSelected() with " << "type=" << type << endl;}
+	cerr << "In typeSelected() with " << "type=" << type << endl;
+}
 
 void ApplicationUI::languageSelected(int language) {
-	cerr << "In languageSelected() with " << "language=" << language << endl;}
+	cerr << "In languageSelected() with " << "language=" << language << endl;
+}

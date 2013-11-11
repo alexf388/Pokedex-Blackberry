@@ -1,6 +1,15 @@
 import bb.cascades 1.2
 NavigationPane {
     id: nav
+    Menu.definition: MenuDefinition {
+        // Add a Settings action
+        settingsAction: SettingsActionItem {
+            title: "Language"
+            onTriggered: {
+                nav.push(languageSelection)
+            }
+        }
+    }
     Page {
         Container {
             Container {
@@ -17,14 +26,6 @@ NavigationPane {
                 }
             }
             
-            DropDown {
-                id: pokedex_languages
-                title: "Language"
-                onSelectedIndexChanged: {
-                    pokedex.languageSelected(selectedValue)
-                }
-                objectName: "pokedex_languages"
-            }
             DropDown {
                 id: pokemon_types
                 title: "Pokémon Type"
@@ -61,6 +62,17 @@ NavigationPane {
         ComponentDefinition {
             id: itemPageDefinition
             source: "ItemPage.qml"
+        },
+        Page {
+            id: languageSelection
+            titleBar: TitleBar {
+                title: "Language Selection"
+            }
+            RadioGroup {
+                id: pokedex_languages
+                objectName: "pokedex_languages"
+            }
+
         }
     ]
     onPopTransitionEnded: {
