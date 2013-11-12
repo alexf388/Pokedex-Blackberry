@@ -5,6 +5,7 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/DropDown>
 #include <bb/cascades/RadioGroup>
+#include <bb/cascades/Label>
 
 #include <iostream>
 
@@ -43,8 +44,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
      * the init() function
      */
 
-    // pointer to hold the UI object
-    DropDown *dropDown(0);
+    // Populate the dropdown list of types
+    DropDown *dropDown(0);	// pointer to hold the DropDown UI object
     // Search the root QML object for a control named "pokemon_types"
     dropDown = root->findChild<DropDown *>("pokemon_types");
 
@@ -58,12 +59,12 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     	cerr << "failed to find pokemon_types " << endl;
     }
 
-    // reset pointer to hold the UI object to zero
-    RadioGroup *radio(0);
+    // Populate radio buttons for language settings
+    RadioGroup *radio(0);	// A pointer to hold the RadioGroup UI object
     // Search the root QML object for a control named "pokemon_types"
     radio = root->findChild<RadioGroup *>("pokedex_languages");
 
-    if (radio) { // did we succeed in getting a pointer to the drop down UI control?
+    if (radio) { // did we succeed in getting a pointer to the radio button UI control?
     	radio->add(Option::create().text("English").value("9").selected(true)); // Yes. Add a new option and make it selected
     	radio->add(Option::create().text("Japanese").value("1")); // Add another option
 		// TODO: Open language_name.csv file, parse the csv data and create the drop down list
@@ -72,6 +73,20 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     else {
     	cerr << "failed to find pokedex_languages " << endl;
     }
+
+
+    // Set status text
+    Label *status(0);	// A pointer to hold the Label UI object
+    // Search the root QML object for a control named "status"
+    status = root->findChild<Label *>("pokedex_status");
+    if (status) { // did we succeed in getting a pointer to the Label UI control?
+    	// Yes. Now set the text as appropriate
+    	status->setText(QString("Found %1 Pokémon").arg(m_pokemonList->childCount(QVariantList())));
+    }
+    else {
+    	cerr << "failed to find status " << endl;
+    }
+
     // Set created root object as the application scene
     app->setScene(root);
 }

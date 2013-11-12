@@ -26,7 +26,6 @@ NavigationPane {
                     objectName: "title"
                 }
             }
-            
             DropDown {
                 id: pokemon_types
                 title: "Pokémon Type"
@@ -39,6 +38,14 @@ NavigationPane {
                     selected: true
                 }
                 objectName: "pokemon_types"
+            }
+            Label { // status text
+                id: status
+                text: ""
+                objectName: "pokedex_status"
+                textStyle.fontSize: FontSize.Small
+                textStyle.color: Color.DarkMagenta
+                horizontalAlignment: HorizontalAlignment.Center
             }
             ListView { // This is the 'view' part of the model-view-controller
                 dataModel: pokemon_list // Connect 'pokemon_list' as the 'model' for this view
@@ -79,5 +86,4 @@ NavigationPane {
     onPopTransitionEnded: {
         page.destroy();
     }
-    accessibility.labelledBy: [ title ]
 }
