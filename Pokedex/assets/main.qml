@@ -66,7 +66,7 @@ NavigationPane {
         Page {
             id: languageSelection
             titleBar: TitleBar {
-                title: "Language Selection"
+                title: "Select Language"
             }
             RadioGroup {
                 id: pokedex_languages
@@ -78,4 +78,5 @@ NavigationPane {
     onPopTransitionEnded: {
         page.destroy();
     }
+    accessibility.labelledBy: [ title ]
 }
