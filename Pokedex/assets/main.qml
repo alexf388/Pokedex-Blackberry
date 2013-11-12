@@ -2,13 +2,14 @@ import bb.cascades 1.2
 NavigationPane {
     id: nav
     Menu.definition: MenuDefinition {
-        // Add a Settings action
-        settingsAction: SettingsActionItem {
-            title: "Language"
-            onTriggered: {
-                nav.push(languageSelection)
+        actions: [
+            ActionItem {
+                title: "Language"
+                onTriggered: {
+                    nav.push(languageSelection)
+                }            
             }
-        }
+        ]
     }
     Page {
         Container {
