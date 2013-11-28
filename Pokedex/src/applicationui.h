@@ -2,6 +2,16 @@
 #define ApplicationUI_H_
 
 #include <QObject>
+#include <bb/cascades/AbstractPane>
+#include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
+#include <bb/cascades/AbstractPane>
+#include <bb/cascades/DropDown>
+#include <iostream>
+
+using namespace bb::cascades;
+using std::cerr;
+using std::endl;
 
 namespace bb
 {
@@ -27,9 +37,13 @@ public:
     Q_INVOKABLE void typeSelected(int type);
     Q_INVOKABLE void languageSelected(int language);
 
+    //initiation function
+    void init();
+
     virtual ~ApplicationUI() { }
 private:
     PokemonList *m_pokemonList;
+    AbstractPane *root;
 };
 
 #endif /* ApplicationUI_H_ */
