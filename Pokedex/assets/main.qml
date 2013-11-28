@@ -84,6 +84,9 @@ NavigationPane {
         }
     ]
     onPopTransitionEnded: {
-        page.destroy();
+        //page.destroy();
+        //properly correction, according to number 4
+        if ( page.id == itemPageDefinition)
+        	page.destroy(); 
     }
 }
