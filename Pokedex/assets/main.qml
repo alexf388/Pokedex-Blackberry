@@ -79,6 +79,10 @@ NavigationPane {
             RadioGroup {
                 id: pokedex_languages
                 objectName: "pokedex_languages"
+                //correction number 5 
+                onSelectedIndexChanged: {
+                 	pokedex.languageSelected(selectedValue)   
+                }
             }
 
         }
