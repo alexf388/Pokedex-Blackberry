@@ -69,8 +69,8 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 					pokemon_list[counter] = list3[1];
 
 					//for testing purposes only
-					cerr<<"list3[1]:" << list3[1].toStdString() << endl;
-					cerr << "pokemon_list[counter]: " << pokemon_list[counter].toStdString() << endl;
+					//cerr<<"list3[1]:" << list3[1].toStdString() << endl;
+					//cerr << "pokemon_list[counter]: " << pokemon_list[counter].toStdString() << endl;
 
 					counter++;
 

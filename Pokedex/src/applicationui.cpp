@@ -25,7 +25,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
 
     // Create root object for the UI
-    AbstractPane *root = qml->createRootObject<AbstractPane>();
+    //AbstractPane *root = qml->createRootObject<AbstractPane>();
+    root = qml->createRootObject<AbstractPane>();
 
     // Set the handle for the "pokedex" object from QML
     qml->setContextProperty("pokedex", this);
@@ -123,10 +124,40 @@ void ApplicationUI::init(){
 	    radio = root->findChild<RadioGroup *>("pokedex_languages");
 
 	    if (radio) { // did we succeed in getting a pointer to the radio button UI control?
-	    	radio->add(Option::create().text("English").value("9").selected(true)); // Yes. Add a new option and make it selected
-	    	radio->add(Option::create().text("Japanese").value("1")); // Add another option
+	    	//testing language options only
+	    	//radio->add(Option::create().text("English").value("9").selected(true)); // Yes. Add a new option and make it selected
+	    	//radio->add(Option::create().text("Japanese").value("1")); // Add another option
+
 			// TODO: Open language_name.csv file, parse the csv data and create the drop down list
 			// Remove above two lines after that is done
+
+
+	    	QFile file("app/native/assets/data/language_names.csv");
+
+	    	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	    		// Successfully opened
+	    		 QTextStream in(&file); // create a text stream from the file
+	    		 int counter_language = 1 ; //counts number of languages
+
+	    		 while (!in.atEnd()) { // Read until EOF
+	    			 QString line_languages = in.readLine(); // Read a line as a QString
+	    			 //testing only
+	    			 //cerr << line_languages.toStdString() << endl;
+
+	    			 QStringList list_languages = line_languages.split(",");
+
+	    			 if (list_languages[1] == "9" && counter_language < 10){
+	    				 radio->add(Option::create().text( list_languages[2] ).value( list_languages[0] ).selected(true));
+	    			 	 counter_language++;
+
+	    			 }
+
+
+	    		 }
+	    	 }
+	    	 else
+	    		 cerr << "Failed to language_name.csv" << file.error() << endl;
+
 	    }
 	    else {
 	    	cerr << "failed to find pokedex_languages " << endl;
