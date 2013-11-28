@@ -42,7 +42,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
 
     /*
-    /* TODO: All of following should be in a separate init() function. You will need to
+    /* COMPLETED: All of following should be in a separate init() function. You will need to
      * save the root pointer in a member variable so that you can access it later from
      * the init() function
 
