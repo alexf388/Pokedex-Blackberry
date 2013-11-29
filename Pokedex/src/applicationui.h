@@ -8,6 +8,7 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/DropDown>
 #include <iostream>
+#include <QString>
 
 using namespace bb::cascades;
 using std::cerr;
@@ -40,10 +41,17 @@ public:
     //initiation function
     void init();
 
+
+
     virtual ~ApplicationUI() { }
 private:
     PokemonList *m_pokemonList;
     AbstractPane *root;
+
+    //added recently // language_number variable is memorized here
+    QString language_number;
+
+
 };
 
 #endif /* ApplicationUI_H_ */

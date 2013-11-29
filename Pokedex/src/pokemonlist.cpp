@@ -6,11 +6,24 @@
  */
 
 #include "pokemonlist.h"
+
+
 #include <iostream>
+#include <bb/cascades/DataModelChangeType>
+#include <string>
+#include <sstream>
+#include <string.h>
+#include <QString>
+
 
 using std::cerr;
 using std::endl;
 using namespace bb::cascades;
+using namespace std;
+
+
+
+
 
 /*
  * PokemonList is derive from DataModel which provides the base class for the "model"
@@ -48,7 +61,9 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	//static QString pokemon_list[6]={"#001 Bulbasaur [Grass, Poison]", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"};
 	//static QString pokemon_type[6]={"Grass, Poison", "Grass, Poison", "Grass, Poison", "Fire", "Fire", "Fire, Flying"}; //this causes memory leak somewhere probably due to return 718 above
 
-	QFile file("app/native/assets/data/pokemon.csv");
+	//QFile file("app/native/assets/data/pokemon.csv");
+	//pokemon_species_name is required for multiple languages!
+	QFile file("app/native/assets/data/pokemon_species_names.csv");
 	static QString pokemon_list[719];
 	QStringList list3; //this list will separate the line input by commas
 	int counter = 0; //counts the number of pokemon until 718
@@ -63,10 +78,17 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 
 			//splits string between commas
 			list3 = line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+			//cout << list3[1] << endl;
 
-			if (counter < 718){
-				if (list3[1] != "identifier"){
-					pokemon_list[counter] = list3[1];
+			//convert char to int
+			//char* language_number_typecast = (char*)language_number;
+
+
+			if (counter < 718 ){
+				//obsolete by the use of pokemon_species_names
+				//if (list3[1] != "identifier" && ){
+				if (list3[2]!="name" && list3[1]==language_number){
+					pokemon_list[counter] = list3[2];
 
 					//for testing purposes only
 					//cerr<<"list3[1]:" << list3[1].toStdString() << endl;
@@ -83,7 +105,7 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	}
 
 	else
-		cerr << "Failed to open types.csv: " << file.error() << endl;
+		cerr << "Failed to open pokemon_species_names.csv" << file.error() << endl;
 
 
 	int i = indexPath[0].toInt(); 		// Get the menu index
@@ -91,6 +113,24 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	data["name"] = pokemon_list[i];	// Get the name of pokemon for this index
 	//data["type"] = pokemon_type[i]; //this causes memory leak somewhere probably due to return 718 above
 	return data;			// Return the name as a QVariant object
+}
+
+
+void PokemonList::languageSelected(int language){
+	cerr << "language " << language << " selected "<< endl;
+	//language_number = language;
+
+	//convert int language to char const *language_number
+	/*
+	stringstream strs;
+	strs << language;
+	string temp_string = strs.str();
+	language_number = (char*) temp_string.c_str();
+	cout << language_number << endl;
+	*/
+	//convert int to QString
+	language_number = QString::number(language);
+
 }
 
 PokemonList::~PokemonList() {

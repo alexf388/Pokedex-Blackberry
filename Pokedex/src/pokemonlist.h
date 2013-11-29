@@ -8,6 +8,8 @@
 #ifndef POKEMONLIST_H_
 #define POKEMONLIST_H_
 
+#include <QString>
+
 #include <bb/cascades/DataModel>
 
 class PokemonList: public bb::cascades::DataModel {
@@ -20,6 +22,16 @@ public:
 	virtual bool hasChildren(const QVariantList& indexPath);
 	virtual QVariant data(const QVariantList& indexPath);
 
+	//added recently
+	Q_INVOKABLE void languageSelected(int language);
+
+
+
+
 	virtual ~PokemonList();
+
+private:
+	//char const *language_number;
+	QString language_number;
 };
 #endif /* POKEMONLIST_H_ */

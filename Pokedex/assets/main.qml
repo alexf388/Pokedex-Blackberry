@@ -81,7 +81,9 @@ NavigationPane {
                 objectName: "pokedex_languages"
                 //correction number 5 
                 onSelectedIndexChanged: {
-                 	pokedex.languageSelected(selectedValue)   
+                 	pokedex.languageSelected(selectedValue)  
+                 	//added
+                    pokemon_list.languageSelected(selectedValue) 
                 }
             }
 

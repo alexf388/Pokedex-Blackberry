@@ -8,6 +8,7 @@
 #include <bb/cascades/Label>
 
 #include <iostream>
+#include <QString>
 
 #include "pokemonlist.h"
 
@@ -34,6 +35,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // Create the "model" to store data about pokemon
     m_pokemonList = new PokemonList(this);
     qml->setContextProperty("pokemon_list", m_pokemonList);
+    //NOTE: can pokemon_list be used to create a new function(s) to store int?
 
 	/* An example on how to locate the dropdown UI control and add an option
 	 * See http://developer.blackberry.com/native/reference/cascades/bb__cascades__dropdown.html
@@ -146,7 +148,7 @@ void ApplicationUI::init(){
 
 	    			 QStringList list_languages = line_languages.split(",");
 
-	    			 if (list_languages[1] == "9" && counter_language < 10){
+	    			 if (list_languages[1] == "9" && counter_language < 10 ){
 	    				 radio->add(Option::create().text( list_languages[2] ).value( list_languages[0] ).selected(true));
 	    			 	 counter_language++;
 
@@ -154,6 +156,7 @@ void ApplicationUI::init(){
 
 
 	    		 }
+
 	    	 }
 	    	 else
 	    		 cerr << "Failed to language_name.csv" << file.error() << endl;
@@ -185,4 +188,7 @@ void ApplicationUI::typeSelected(int type) {
 
 void ApplicationUI::languageSelected(int language) {
 	cerr << "In languageSelected() with " << "language=" << language << endl;
+	//sets language_number = language, so changes can be made now?
+	language_number = QString::number(language);
+
 }

@@ -1,5 +1,7 @@
 1
-14
+16
+data/ability.csv
+data/ability_names.csv
 data/language_names.csv
 data/pokemon.csv
 data/pokemon_species_flavor_text.csv
