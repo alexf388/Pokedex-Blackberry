@@ -6,6 +6,7 @@
 #include <bb/cascades/DropDown>
 #include <bb/cascades/RadioGroup>
 #include <bb/cascades/Label>
+#include <bb/cascades/DataModelChangeType>
 
 #include <iostream>
 #include <QString>
@@ -105,16 +106,57 @@ void ApplicationUI::init(){
 	     * the init() function
 	     */
 
+		//BOOLEAN HARD CODE VALUES FOR CHANGING TO ENGLISH OR JAPANESE
+		bool languageChoice=true; //true for english, false for Japanese
+
 	    // Populate the dropdown list of types
 	    DropDown *dropDown(0);	// pointer to hold the DropDown UI object
 	    // Search the root QML object for a control named "pokemon_types"
 	    dropDown = root->findChild<DropDown *>("pokemon_types");
 
 	    if (dropDown) { // did we succeed in getting a pointer to the drop down UI control?
-	        dropDown->add(Option::create().text("Grass").value("1")); // Yes. Add a new option
-	        dropDown->add(Option::create().text("Poison").value("2")); // Yes. Add a new option
+	        //dropDown->add(Option::create().text("Grass").value("1")); // Yes. Add a new option
+	        //dropDown->add(Option::create().text("Poison").value("2")); // Yes. Add a new option
 			// TODO: Open types.csv file, parse the csv data and create the drop down list
-			// Remove above two lines after that is doneaa
+			// Remove above two lines after that is done
+
+	    	QFile file("app/native/assets/data/type_names.csv");
+
+	    	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	    		QTextStream in(&file);
+
+
+
+	    		while (!in.atEnd()) {
+	    			QString line_types= in.readLine();
+	    			QStringList list_types = line_types.split(",");
+
+	    			//int type_counter = 1; //counts the number of types
+
+	    			 //if language selection is "9" i.e. English
+	    				if (languageChoice){
+	    					if (list_types[1] == "9" && list_types[0]!="10001" && list_types[0]!="10002"){
+	    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
+	    					}
+	    					//type_counter++;
+	    				}
+	    				else if (!languageChoice ){ //if language selection is "1" i.e. Japanese
+	    					if (list_types[1] == "1" && list_types[0]!="10001" && list_types[0]!="10002"){
+	    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
+	    					}
+	    					//type_counter++;
+	    				}
+
+
+
+	    		}
+
+
+	    	}
+	    	else
+	    		cerr << "Failed to type_names.csv" << file.error() << endl;
+
+
 	    }
 	    else {
 	    	cerr << "failed to find pokemon_types " << endl;
@@ -139,18 +181,40 @@ void ApplicationUI::init(){
 	    	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 	    		// Successfully opened
 	    		 QTextStream in(&file); // create a text stream from the file
-	    		 int counter_language = 1 ; //counts number of languages
+	    		 //int counter_language = 1 ; //counts number of languages
 
 	    		 while (!in.atEnd()) { // Read until EOF
 	    			 QString line_languages = in.readLine(); // Read a line as a QString
 	    			 //testing only
 	    			 //cerr << line_languages.toStdString() << endl;
 
+
+
 	    			 QStringList list_languages = line_languages.split(",");
 
-	    			 if (list_languages[1] == "9" && counter_language < 10 ){
-	    				 radio->add(Option::create().text( list_languages[2] ).value( list_languages[0] ).selected(true));
-	    			 	 counter_language++;
+	    			 if (languageChoice){//if english
+	    				 if (list_languages[1] == "9" && list_languages[0] == "9"){
+	    					 radio->add(Option::create().text( list_languages[2] ).objectName(list_languages[0]).value( list_languages[0] ).selected(true));
+
+	    				 }
+	    				 else if (list_languages[1] == "9"  ){
+	    					 radio->add(Option::create().text( list_languages[2] ).objectName(list_languages[0]).value( list_languages[0] ));
+	    				 }
+
+	    			 }
+
+	    			 else if (!languageChoice){//if japanese
+	    				 if (list_languages[1] == "1" && list_languages[0] == "1"){
+	    				 	 radio->add(Option::create().text( list_languages[2] ).objectName(list_languages[0]).value( list_languages[0] ).selected(true));
+
+	    				 }
+
+	    				 else if (list_languages[1] == "1" ){
+	    				 	 radio->add(Option::create().text( list_languages[2] ).objectName(list_languages[0]).value( list_languages[0] ));
+
+	    				 }
+
+
 
 	    			 }
 
@@ -190,5 +254,6 @@ void ApplicationUI::languageSelected(int language) {
 	cerr << "In languageSelected() with " << "language=" << language << endl;
 	//sets language_number = language, so changes can be made now?
 	language_number = QString::number(language);
+	//emit itemsChanged( bb::cascades::DataModelChangeType::Init);
 
 }

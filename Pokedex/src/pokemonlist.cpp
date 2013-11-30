@@ -61,6 +61,21 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	//static QString pokemon_list[6]={"#001 Bulbasaur [Grass, Poison]", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"};
 	//static QString pokemon_type[6]={"Grass, Poison", "Grass, Poison", "Grass, Poison", "Fire", "Fire", "Fire, Flying"}; //this causes memory leak somewhere probably due to return 718 above
 
+	/*
+	QFile file1("app/native/assets/data/pokemon.csv");
+
+	if (file1.open(QIODevice::ReadOnly | QIODevice::Text)){
+		//successfully opened
+		QTextStream in(&file1); // create a text stream from file1
+
+
+
+	}
+	else
+			cerr << "Failed to open pokemon.csv" << file.error() << endl;
+
+	 */
+
 	//QFile file("app/native/assets/data/pokemon.csv");
 	//pokemon_species_name is required for multiple languages!
 	QFile file("app/native/assets/data/pokemon_species_names.csv");
@@ -130,6 +145,7 @@ void PokemonList::languageSelected(int language){
 	*/
 	//convert int to QString
 	language_number = QString::number(language);
+	emit itemsChanged( bb::cascades::DataModelChangeType::Update);
 
 }
 
