@@ -61,22 +61,39 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	//static QString pokemon_list[6]={"#001 Bulbasaur [Grass, Poison]", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"};
 	static QString pokemon_type[718]={"Grass, Poison", "Grass, Poison", "Grass, Poison", "Fire", "Fire", "Fire, Flying"}; //this causes memory leak somewhere probably due to return 718 above
 	//static QString pokemon_abilities[718] ={}; //how to access abilities for respective pokemon?
-	static QString pokemon_hp[718]={"45"};//stat_id = 1
-	static QString pokemon_attack[718]= {"49"}; //stat_id = 2
-	static QString pokemon_defence[718]={"49"}; //stat_id = 3
-	static QString pokemon_specialattack[718]={"65"}; //stat_id = 4
-	static QString pokemon_specialdefence[718]={"65"}; //stat_id = 5
-	static QString pokemon_speed[718] = {"45"}; //stat_id = 6
+	static QString pokemon_hp[718];
+	static QString pokemon_attack[718];
+	static QString pokemon_defence[718];
+	static QString pokemon_specialattack[718];
+	static QString pokemon_specialdefence[718];
+	static QString pokemon_speed[718];
+	static QString pokemon_totalpoints[718];
+
+	//testing only
+	//static QString pokemon_hp[718]={"45"};//stat_id = 1
+	//static QString pokemon_attack[718]= {"49"}; //stat_id = 2
+	//static QString pokemon_defence[718]={"49"}; //stat_id = 3
+	//static QString pokemon_specialattack[718]={"65"}; //stat_id = 4
+	//static QString pokemon_specialdefence[718]={"65"}; //stat_id = 5
+	//static QString pokemon_speed[718] = {"45"}; //stat_id = 6
+
+
 	//TODO: also need total stat points
 	//TODO: also need description (from earliest appearance)
 	//static QString pokemon_totalstats[718] = hp + attack + defence + special attack + special defence + speed
 
+	//number of all types
+	static int numberOfAllTypes = 718;
+
+
+
+
 
 	//testing indexPath
-	int level = indexPath.size();
-	cout << "size of level is " << level << endl;
-	cout << "indexPath[0] to int is : " << indexPath[0].toInt() << endl;
-	cout <<"indexpath[1,0] to int is: " << indexPath[1,0].toInt() << endl;
+	//int level = indexPath.size();
+	//cout << "size of level is " << level << endl;
+	//cout << "indexPath[0] to int is : " << indexPath[0].toInt() << endl;
+	//cout <<"indexpath[1,0] to int is: " << indexPath[1,0].toInt() << endl;
 
 
 	QVariantMap data;
@@ -87,8 +104,8 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		QFile file("app/native/assets/data/pokemon_species_names.csv");
 		static QString pokemon_list[719];
 		QStringList list3; //this list will separate the line input by commas
-		int counter = 0; //counts the number of pokemon until 718
-		static int numberOfTypes = 97;
+		int counter_1 = 0; //counts the number of pokemon until 718
+		static int numberOfNormalTypes = 97;
 
 
 
@@ -105,14 +122,12 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 
 	else{ //selected all types
 		//cout <<"You selected all types!!!" << endl;
-		//QFile file("app/native/assets/data/pokemon.csv");
 		//pokemon_species_name is required for multiple languages!
 
 		QFile file("app/native/assets/data/pokemon_species_names.csv");
 		static QString pokemon_list[719];
 		QStringList list3; //this list will separate the line input by commas
 		int counter = 0; //counts the number of pokemon until 718
-		static int numberOfAllTypes = 718;
 
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
@@ -153,27 +168,140 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 			cerr << "Failed to open pokemon_species_names.csv" << file.error() << endl;
 
 
+		//correct number for pokemon HP, attack
+		QFile file1("app/native/assets/data/pokemon_stats.csv");
+		QStringList list_stats;
+		static int counter_hp = 0;
+		static int counter_attack = 0;
+		static int counter_defence = 0;
+		static int counter_specialattack = 0;
+		static int counter_specialdefence = 0;
+		static int counter_speed = 0;
+		static int counter_totalpoints = 0;//should be the same as counter_speed
 
-	int i = indexPath[0].toInt(); 		// Get the menu index
-	//added to the top
-	//QVariantMap data;
-	data["aaa"] = pokemon_list[i];	// Get the name of pokemon for this index
-	data["type"] = pokemon_type[i]; //this causes memory leak somewhere probably due to return 718 above
-	//data["ability"] = pokemon_abilities[i];
-	data["hp"]=pokemon_hp[i];
-	//return other types of data, such as ability, hit points, attack, defence, special attack, special defence, speed, total stat points, height (m), weight (kg), and description (from earliest appearance/version)
-	//TODO: how do I return ability?
-	data["attack"] = pokemon_attack[i];
-	data["defence"]=pokemon_defence[i];
-	data["specialattack"]=pokemon_specialattack[i];
-	data["specialdefence"]= pokemon_specialdefence[i];
-	data["speed"]=pokemon_speed[i];
+		int hp_convert = 0;
+		int attack_convert = 0;
+		int defence_convert = 0;
+		int specialattack_convert = 0;
+		int specialdefence_convert = 0;
+		int speed_convert = 0;
+
+
+		if (file1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			// Successfully opened
+			QTextStream in(&file1);
+
+			while (!in.atEnd()) {
+				QString line = in.readLine();
+
+				list_stats = line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+				//cerr <<"list stats: " << list_stats[1].toStdString() << endl;
+
+				if(counter_speed < numberOfAllTypes){ //NOTE: should really use counter_whichever is the last one
+					//if hp
+					if (list_stats[1]=="1"){
+						pokemon_hp[counter_hp]= list_stats[2];
+
+						//convert to int for total points
+						hp_convert = pokemon_hp[counter_hp].toInt();
+
+						counter_hp++;
+
+					}
+					//if attack
+					if (list_stats[1]=="2"){
+						pokemon_attack[counter_attack]=list_stats[2];
+
+						//convert to int for total points
+						attack_convert = pokemon_attack[counter_attack].toInt();
+
+						counter_attack++;
+
+					}
+					//if defence
+					if (list_stats[1]=="3"){
+						pokemon_defence[counter_defence]=list_stats[2];
+
+						//convert to int for total points
+						defence_convert = pokemon_defence[counter_defence].toInt();
+
+						counter_defence++;
+					}
+					//if specialattack
+					if (list_stats[1]=="4"){
+						pokemon_specialattack[counter_specialattack]=list_stats[2];
+
+						//convert to int for total points
+						specialattack_convert = pokemon_specialattack[counter_specialattack].toInt();
+
+						counter_specialattack++;
+
+					}
+					//if specialdefence
+					if (list_stats[1]=="5"){
+						pokemon_specialdefence[counter_specialdefence]=list_stats[2];
+
+						//convert to int for total point
+						specialdefence_convert = pokemon_specialdefence[counter_specialdefence].toInt();
+
+						counter_specialdefence++;
+					}
+					//if speed and total points exist
+					if (list_stats[1]=="6"){
+						pokemon_speed[counter_speed]=list_stats[2];
+
+						//convert to int for total points
+						speed_convert = pokemon_speed[counter_speed].toInt();
+
+						counter_speed++;
+
+						//add total points
+						int total_points_int = hp_convert + attack_convert + defence_convert + specialattack_convert + specialdefence_convert + speed_convert ;
+						//convert total_points to QString
+						QString total_points_qstring = QString::number(total_points_int);
+
+						pokemon_totalpoints[counter_totalpoints] = total_points_qstring;
+
+						counter_totalpoints++;
+					}
+
+
+					emit itemsChanged( bb::cascades::DataModelChangeType::Update);//used to indicate items have chagned
+
+				}
+
+
+			}
+		}
+		else
+			cerr << "Failed to open pokemon_stats.csv" << file1.error() << endl;
 
 
 
 
 
-	return data;			// Return the name as a QVariant object
+
+		int i = indexPath[0].toInt(); 		// Get the menu index
+		//added to the top
+		//QVariantMap data;
+		data["aaa"] = pokemon_list[i];	// Get the name of pokemon for this index
+		data["type"] = pokemon_type[i]; //this causes memory leak somewhere probably due to return 718 above
+		//data["ability"] = pokemon_abilities[i];
+		data["hp"]=pokemon_hp[i];
+		//return other types of data, such as ability, hit points, attack, defence, special attack, special defence, speed, total stat points, height (m), weight (kg), and description (from earliest appearance/version)
+		//TODO: how do I return ability?
+		data["attack"] = pokemon_attack[i];
+		data["defence"]=pokemon_defence[i];
+		data["specialattack"]=pokemon_specialattack[i];
+		data["specialdefence"]= pokemon_specialdefence[i];
+		data["speed"]=pokemon_speed[i];
+		data["totalpoints"]= pokemon_totalpoints[i];
+
+
+
+
+
+		return data;			// Return the name as a QVariant object
 	}
 
 

@@ -69,6 +69,7 @@ NavigationPane {
                         contentpage.specialattack = chosenItem.specialattack
                         contentpage.specialdefence = chosenItem.specialdefence
                         contentpage.speed = chosenItem.speed
+                        contentpage.totalpoints = chosenItem.totalpoints
                         nav.push(contentpage); // Show the page
                     }
                 }

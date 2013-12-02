@@ -10,6 +10,7 @@ Page {
     property alias specialattack: specialattack.text
     property alias specialdefence: specialdefence.text
     property alias speed: speed.text 
+    property alias totalpoints: totalpoints.text 
     
     titleBar: TitleBar {
         id: titlebar
@@ -94,6 +95,14 @@ Page {
                 id: speed
             }
             //TOTALPOINTS label 
+            Label {
+                text: "Total points: "
+                textStyle.fontWeight: FontWeight.Bold
+                textStyle.color: Color.DarkRed 
+            }
+            Label{
+                id: totalpoints
+            }
             
             
             
