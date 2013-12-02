@@ -24,6 +24,7 @@ public:
 
 	//added recently
 	Q_INVOKABLE void languageSelected(int language);
+	Q_INVOKABLE void typeSelected(int type);
 
 
 
@@ -33,5 +34,6 @@ public:
 private:
 	//char const *language_number;
 	QString language_number;
+	int type_number;
 };
 #endif /* POKEMONLIST_H_ */

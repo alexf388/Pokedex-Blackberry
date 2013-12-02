@@ -18,6 +18,8 @@ using namespace bb::cascades;
 using std::cerr;
 using std::endl;
 
+//values for all the sizes of types
+
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         QObject(app), m_pokemonList(0)
 {
