@@ -22,6 +22,8 @@ public:
 	virtual bool hasChildren(const QVariantList& indexPath);
 	virtual QVariant data(const QVariantList& indexPath);
 
+
+
 	//added recently
 	Q_INVOKABLE void languageSelected(int language);
 	Q_INVOKABLE void typeSelected(int type);

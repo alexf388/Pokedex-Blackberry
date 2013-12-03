@@ -2,7 +2,9 @@ import bb.cascades 1.2
 
 Page {
     property alias aaa: titlebar.title
-    property alias type: type_label.text // "type" property of this screen is mapped to the text field of the UI element with the id of "type_label"
+    property alias type1: type_label_1.text // "type" property of this screen is mapped to the text field of the UI element with the id of "type_label"
+    property alias type2: type_label_2.text
+    
     // TODO: create other aliases that will be set from main.qml
     property alias hp: hp.text
     property alias attack: attack.text
@@ -22,17 +24,31 @@ Page {
             layout: StackLayout { // Lay out sub items left-to-right
                 orientation: LayoutOrientation.LeftToRight
             }
-            //Type label 
+            
+            layoutProperties: StackLayoutProperties {
+                spaceQuota: 1
+            }
+            //Type labels
             Label { 
-                text: "Type: "
+                text: "Type1: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed // Show this text
             } 
 	        Label {
-                id: type_label // Name this as type_label so that the property alias above can set the text property of this item
+                id: type_label_1 // Name this as type_label so that the property alias above can set the text property of this item
             } 
-	             
 	        
+            Label { 
+                text: "  "
+                textStyle.fontWeight: FontWeight.Bold
+                textStyle.color: Color.DarkRed // Show this text
+            } 
+            Label {
+                id: type_label_2 // Name this as type_label so that the property alias above can set the text property of this item
+            } 
+	        
+            
+            
 	        
 	        
         }

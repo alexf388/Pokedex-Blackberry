@@ -53,13 +53,14 @@ NavigationPane {
             ListView { // This is the 'view' part of the model-view-controller
                 dataModel: pokemon_list // Connect 'pokemon_list' as the 'model' for this view
                 
+                
                 onTriggered: { // What to do when user selects an item
                     if (indexPath.length == 1) { // this is a first level item //default value is 1
                         var chosenItem = dataModel.data(indexPath);	// Get the data from dataModel
                         var contentpage = itemPageDefinition.createObject(); // create the sub-page
 
                         contentpage.aaa = chosenItem.aaa // Set the properties. See property alias statements in itemPage.qml 
-                        contentpage.type = chosenItem.type
+                        //contentpage.type = chosenItem.type
                         // TODO: set other stats
                         
                         //you must add total points and ability 
@@ -72,6 +73,9 @@ NavigationPane {
                         contentpage.totalpoints = chosenItem.totalpoints
                         contentpage.height = chosenItem.height
                         contentpage.weight = chosenItem.weight
+                        contentpage.type1 = chosenItem.type1
+                        contentpage.type2 = chosenItem.type2
+                        
                         nav.push(contentpage); // Show the page
                     }
                 }

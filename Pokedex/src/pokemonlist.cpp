@@ -61,7 +61,7 @@ bool PokemonList::hasChildren(const QVariantList& indexPath) {
 QVariant PokemonList::data(const QVariantList& indexPath) {
 	// TODO: Load the list from db/pokemon.csv file
 	//static QString pokemon_list[6]={"#001 Bulbasaur [Grass, Poison]", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"};
-	static QString pokemon_type[718]={"Grass, Poison", "Grass, Poison", "Grass, Poison", "Fire", "Fire", "Fire, Flying"}; //this causes memory leak somewhere probably due to return 718 above
+	//static QString pokemon_type[718]={"Grass, Poison", "Grass, Poison", "Grass, Poison", "Fire", "Fire", "Fire, Flying"}; //this causes memory leak somewhere probably due to return 718 above
 	//static QString pokemon_abilities[718] ={}; //how to access abilities for respective pokemon?
 	static QString pokemon_hp[718];
 	static QString pokemon_attack[718];
@@ -72,6 +72,10 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	static QString pokemon_totalpoints[718];
 	static QString pokemon_height[718];
 	static QString pokemon_weight[718];
+	static QString pokemon_type_1[718];
+	static QString pokemon_type_2[718];
+
+	QVariantMap data;
 
 	//testing only
 	//static QString pokemon_hp[718]={"45"};//stat_id = 1
@@ -98,7 +102,7 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	//cout <<"indexpath[1,0] to int is: " << indexPath[1,0].toInt() << endl;
 
 
-	QVariantMap data;
+
 
 	if (type_number == 1){ //select normal
 		cout <<"you selected normal " << endl;
@@ -278,6 +282,7 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		else
 			cerr << "Failed to open pokemon_stats.csv" << file1.error() << endl;
 
+		//mass and height
 		//open file2 to access mass and height for each pokemon
 		QFile file2("app/native/assets/data/pokemon.csv");
 		QStringList pokemon_stats;
@@ -312,14 +317,110 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		else
 			cerr << "Failed to open pokemon.csv" << file2.error() << endl;
 
+		//pokemon_types
+		QFile file3("app/native/assets/data/pokemon_types.csv");
+		QStringList pokemon_types;
+		static int types_counter_1= 0;
+		static int types_counter_2= 0 ;
 
+		 if (file3.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			 // Successfully opened
+			 QTextStream in(&file3); // create a text stream from the file
+			 while (!in.atEnd()) { // Read until EOF
+				 QString line = in.readLine(); // Read a line as a QString
+				 pokemon_types= line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
+				 if (types_counter_2 < numberOfAllTypes){//should be stats_counter_2
+					 if ((pokemon_types[0]!="pokemon_id")){
+						 if (pokemon_types[2]=="1"){
+
+
+
+							 QFile file_types("app/native/assets/data/type_names.csv");
+							 	QStringList list;
+
+							 	if (file_types.open(QIODevice::ReadOnly | QIODevice::Text)) {
+							 		// Successfully opened
+							 		QTextStream in(&file_types); // create a text stream from the file
+							 		while (!in.atEnd()) { // Read until EOF
+							 			QString line = in.readLine(); // Read a line as a QString
+							 			//cerr << line.toStdString() << endl;
+
+							 			list= line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
+							 			if (list[1] == language_number && list[0]==pokemon_types[1]){
+							 				pokemon_type_1[types_counter_1] =list[2];
+							 				types_counter_2= types_counter_1;
+							 				types_counter_1++;
+							 			}
+							 		}
+
+							 	}
+							 	 else
+							 		 cerr << "Failed to open types_names.csv: " << file.error() << endl;
+
+
+							 //types_counter_1++;
+
+							 //TODO: create a function that takes in language QString and pokemon_types[1] QString and translate it into the appropriate type with respect to language
+						 }
+
+						 if (pokemon_types[2]=="2"){
+							 //pokemon_type_2[types_counter_2] = pokemon_types[1];
+
+
+							 	QFile file_types2("app/native/assets/data/type_names.csv");
+							 	QStringList list2;
+
+							 	if (file_types2.open(QIODevice::ReadOnly | QIODevice::Text)) {
+							 		// Successfully opened
+							 		QTextStream in(&file_types2); // create a text stream from the file
+							 		while (!in.atEnd()) { // Read until EOF
+							 			QString line = in.readLine(); // Read a line as a QString
+							 			//cerr << line.toStdString() << endl;
+
+							 			list2= line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
+							 			if (list2[1] == language_number && list2[0]==pokemon_types[1]){
+							 				pokemon_type_2[(types_counter_2)] = list2[2];
+							 				//types_counter_2++;
+							 			}
+							 		}
+
+							 	}
+							 	 else
+							 		 cerr << "Failed to open types_names.csv: " << file.error() << endl;
+
+							 types_counter_2++;
+
+							 //TODO: create a function that takes in language QString and pokemon_types[1] QString and translate it into the appropriate type with respect to language
+						 }
+
+
+					 }
+
+				 }
+
+			 }
+		 }
+		 else
+			 cerr << "Failed to open pokemon_types.csv: " << file3.error() << endl;
+
+
+		//description
+		//open different file to access description
 
 
 		int i = indexPath[0].toInt(); 		// Get the menu index
 		//added to the top
 		//QVariantMap data;
+
 		data["aaa"] = pokemon_list[i];	// Get the name of pokemon for this index
-		data["type"] = pokemon_type[i]; //this causes memory leak somewhere probably due to return 718 above
+		data["type1"] = pokemon_type_1[i];
+		data["type2"] = pokemon_type_2[i];
+
+
+
 		//data["ability"] = pokemon_abilities[i];
 		data["hp"]=pokemon_hp[i];
 		//return other types of data, such as ability, hit points, attack, defence, special attack, special defence, speed, total stat points, height (m), weight (kg), and description (from earliest appearance/version)
@@ -367,8 +468,14 @@ void PokemonList::languageSelected(int language){
 	//convert int to QString
 	language_number = QString::number(language);
 	emit itemsChanged( bb::cascades::DataModelChangeType::Update);
+	//emit itemsChanged(bb::cascades::DataModelChangeType::Init);
 
 }
+
+
+
+
+
 
 PokemonList::~PokemonList() {
 	// TODO: Delete any object that were created
