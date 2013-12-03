@@ -109,7 +109,7 @@ void ApplicationUI::init(){
 	     */
 
 		//DEFAULT VALUES FOR CHANGING TO ENGLISH OR JAPANESE
-		bool languageChoice=false; //true for english, false for Japanese
+		bool languageChoice=true; //true for english, false for Japanese
 
 	    // Populate the dropdown list of types
 	    DropDown *dropDown(0);	// pointer to hold the DropDown UI object

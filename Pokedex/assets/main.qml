@@ -75,6 +75,7 @@ NavigationPane {
                         contentpage.weight = chosenItem.weight
                         contentpage.type1 = chosenItem.type1
                         contentpage.type2 = chosenItem.type2
+                        contentpage.description=chosenItem.description
                         
                         nav.push(contentpage); // Show the page
                     }

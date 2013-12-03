@@ -15,6 +15,7 @@ Page {
     property alias totalpoints: totalpoints.text 
     property alias height : height.text
     property alias weight : weight.text
+    property alias description : description.text
     
     titleBar: TitleBar {
         id: titlebar
@@ -30,9 +31,10 @@ Page {
             }
             //Type labels
             Label { 
-                text: "Type1: "
+                text: "Type: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed // Show this text
+                
             } 
 	        Label {
                 id: type_label_1 // Name this as type_label so that the property alias above can set the text property of this item
@@ -52,10 +54,36 @@ Page {
 	        
 	        
         }
+        
+        Container{
+            layout: StackLayout { // Lay out sub items left-to-right
+                orientation: LayoutOrientation.TopToBottom
+            }
+            
+            
+            Label { 
+                text: "Description:"
+                textStyle.fontWeight: FontWeight.Normal
+                textStyle.fontSize: FontSize.Small
+                textStyle.color: Color.DarkRed // Show this text
+            } 
+            Label {
+                id: description // Name this as type_label so that the property alias above can set the text property of this item
+                //textStyle.fontSize: FontSize.Small
+                textFit {
+                    mode: LabelTextFitMode.FitToBounds
+                }
+
+                
+            } 
+        
+        }
+        
         // TODO: Add other containers to display other stats of the pokemon
         Container{
             layout:StackLayout { // Lay out sub items top to bottom
                 orientation: LayoutOrientation. LeftToRight
+                
             }
             
             //height label 
@@ -64,10 +92,12 @@ Page {
                 textStyle.fontWeight: FontWeight.Normal
                 textStyle.fontSize: FontSize.Small
                 textStyle.color: Color.Black 
+                
             }
             Label{
                 id: height
                 textStyle.fontSize: FontSize.Small
+                
             }
             
             //weight label 
