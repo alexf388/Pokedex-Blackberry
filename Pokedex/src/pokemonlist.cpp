@@ -46,7 +46,10 @@ int PokemonList::childCount(const QVariantList& indexPath) {
 		//return 718;	// TODO: Return the correct number of pokemon
 
 	// No sub levels
-	return 0;
+	if (type_number == 1){
+		//emit itemsChanged( bb::cascades::DataModelChangeType::Init);
+		return counter_normal;
+	}
 }
 
 // Used for displaying multi-level lists
@@ -112,12 +115,29 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		cout <<"you selected normal " << endl;
 
 		//count the number of pokemon
-		QFile file("app/native/assets/data/pokemon_species_names.csv");
-		static QString pokemon_list[719];
+		QFile file("app/native/assets/data/pokemon_types.csv");
+		//static QString pokemon_list[719];
 		QStringList list3; //this list will separate the line inp	ut by commas
-		int counter_1 = 0; //counts the number of pokemon until 718
+		counter_normal = 0;
 		//static int numberOfNormalTypes = 97;
 
+
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QTextStream in(&file);
+			while (!in.atEnd()) {
+				QString line = in.readLine();
+				list3 = line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
+				if (list3[1] == "1"){
+					counter_normal++;
+				}
+			}
+		}
+		else
+			cerr << "Failed to open pokemon_types.csv: " << file.error() << endl;
+
+		cout << "counter_normal is: " << counter_normal << endl;
+		//emit itemsChanged( bb::cascades::DataModelChangeType::Init);
 
 
 
@@ -137,7 +157,7 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 
 
 	else{ //selected all types
-		//cout <<"You selected all types!!!" << endl;
+		cout <<"You selected all types!!!" << endl;
 		//pokemon_species_name is required for multiple languages!
 
 		static QString pokemon_hp[718];

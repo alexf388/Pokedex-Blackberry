@@ -37,5 +37,7 @@ private:
 	//char const *language_number;
 	QString language_number;
 	int type_number;
+
+	int counter_normal;
 };
 #endif /* POKEMONLIST_H_ */
