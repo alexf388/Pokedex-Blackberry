@@ -47,8 +47,8 @@ int PokemonList::childCount(const QVariantList& indexPath) {
 
 	// No sub levels
 	if (type_number == 1){
-		//emit itemsChanged( bb::cascades::DataModelChangeType::Init);
-		return counter_normal;
+
+		return 105;
 	}
 }
 
@@ -115,26 +115,26 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		cout <<"you selected normal " << endl;
 
 		//count the number of pokemon
-		QFile file("app/native/assets/data/pokemon_types.csv");
+		QFile file_normal("app/native/assets/data/pokemon_types.csv");
 		//static QString pokemon_list[719];
-		QStringList list3; //this list will separate the line inp	ut by commas
+		QStringList list_normal; //this list will separate the line input by commas
 		counter_normal = 0;
 		//static int numberOfNormalTypes = 97;
 
 
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QTextStream in(&file);
+		if (file_normal.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QTextStream in(&file_normal);
 			while (!in.atEnd()) {
 				QString line = in.readLine();
-				list3 = line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+				list_normal = line.split(",");
 
-				if (list3[1] == "1"){
+				if (list_normal[1] == "1" && (list_normal[0].toInt() < numberOfAllTypes)){
 					counter_normal++;
 				}
 			}
 		}
 		else
-			cerr << "Failed to open pokemon_types.csv: " << file.error() << endl;
+			cerr << "Failed to open pokemon_types.csv: " << file_normal.error() << endl;
 
 		cout << "counter_normal is: " << counter_normal << endl;
 		//emit itemsChanged( bb::cascades::DataModelChangeType::Init);

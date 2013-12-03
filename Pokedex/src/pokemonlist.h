@@ -39,5 +39,6 @@ private:
 	int type_number;
 
 	int counter_normal;
+
 };
 #endif /* POKEMONLIST_H_ */
