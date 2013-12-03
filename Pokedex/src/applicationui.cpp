@@ -108,8 +108,8 @@ void ApplicationUI::init(){
 	     * the init() function
 	     */
 
-		//BOOLEAN HARD CODE VALUES FOR CHANGING TO ENGLISH OR JAPANESE
-		bool languageChoice=true; //true for english, false for Japanese
+		//DEFAULT VALUES FOR CHANGING TO ENGLISH OR JAPANESE
+		bool languageChoice=false; //true for english, false for Japanese
 
 	    // Populate the dropdown list of types
 	    DropDown *dropDown(0);	// pointer to hold the DropDown UI object
