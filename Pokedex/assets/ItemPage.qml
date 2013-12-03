@@ -11,6 +11,8 @@ Page {
     property alias specialdefence: specialdefence.text
     property alias speed: speed.text 
     property alias totalpoints: totalpoints.text 
+    property alias height : height.text
+    property alias weight : weight.text
     
     titleBar: TitleBar {
         id: titlebar
@@ -36,9 +38,42 @@ Page {
         }
         // TODO: Add other containers to display other stats of the pokemon
         Container{
-            layout: StackLayout { // Lay out sub items left-to-right
+            layout:StackLayout { // Lay out sub items top to bottom
+                orientation: LayoutOrientation. LeftToRight
+            }
+            
+            //height label 
+            Label {
+                text: "Height(m): "
+                textStyle.fontWeight: FontWeight.Normal
+                textStyle.fontSize: FontSize.Small
+                textStyle.color: Color.Black 
+            }
+            Label{
+                id: height
+                textStyle.fontSize: FontSize.Small
+            }
+            
+            //weight label 
+            Label {
+                text: "Weight(kg): "
+                textStyle.fontWeight: FontWeight.Normal
+                textStyle.fontSize: FontSize.Small
+                textStyle.color: Color.Black 
+            }
+            Label{
+                id: weight
+                textStyle.fontSize: FontSize.Small
+            }
+            
+        }
+        
+        
+        Container{
+            layout: StackLayout { // Lay out sub items top to bottom
                 orientation: LayoutOrientation.TopToBottom
             }
+           
             
             //HP label 
             Label {

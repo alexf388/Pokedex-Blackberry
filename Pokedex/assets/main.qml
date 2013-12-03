@@ -70,6 +70,8 @@ NavigationPane {
                         contentpage.specialdefence = chosenItem.specialdefence
                         contentpage.speed = chosenItem.speed
                         contentpage.totalpoints = chosenItem.totalpoints
+                        contentpage.height = chosenItem.height
+                        contentpage.weight = chosenItem.weight
                         nav.push(contentpage); // Show the page
                     }
                 }

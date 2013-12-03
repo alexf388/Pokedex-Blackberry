@@ -23,6 +23,8 @@ using namespace std;
 
 
 //values for sizes of all types
+//number of all types
+static int numberOfAllTypes = 718;
 
 
 /*
@@ -68,6 +70,8 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	static QString pokemon_specialdefence[718];
 	static QString pokemon_speed[718];
 	static QString pokemon_totalpoints[718];
+	static QString pokemon_height[718];
+	static QString pokemon_weight[718];
 
 	//testing only
 	//static QString pokemon_hp[718]={"45"};//stat_id = 1
@@ -82,8 +86,6 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 	//TODO: also need description (from earliest appearance)
 	//static QString pokemon_totalstats[718] = hp + attack + defence + special attack + special defence + speed
 
-	//number of all types
-	static int numberOfAllTypes = 718;
 
 
 
@@ -103,7 +105,7 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 
 		QFile file("app/native/assets/data/pokemon_species_names.csv");
 		static QString pokemon_list[719];
-		QStringList list3; //this list will separate the line input by commas
+		QStringList list3; //this list will separate the line inp	ut by commas
 		int counter_1 = 0; //counts the number of pokemon until 718
 		static int numberOfNormalTypes = 97;
 
@@ -276,7 +278,39 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		else
 			cerr << "Failed to open pokemon_stats.csv" << file1.error() << endl;
 
+		//open file2 to access mass and height for each pokemon
+		QFile file2("app/native/assets/data/pokemon.csv");
+		QStringList pokemon_stats;
+		static int stats_counter= 0;
 
+		if (file2.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QTextStream in(&file2);
+
+			while (!in.atEnd()) {
+				QString line = in.readLine();
+				pokemon_stats= line.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
+				if ((stats_counter < numberOfAllTypes) && pokemon_stats[0]!="id"){
+					double height = pokemon_stats[3].toDouble();
+					double weight = pokemon_stats[4].toDouble();
+
+					height = height/10;
+					weight = weight/10;
+
+					//pokemon_height[stats_counter] = pokemon_stats[3];
+					//pokemon_weight[stats_counter] = pokemon_stats[4];
+
+					pokemon_height[stats_counter] = QString::number(height);
+					pokemon_weight[stats_counter] = QString::number(weight);
+
+					stats_counter++;
+				}
+
+			}
+
+		}
+		else
+			cerr << "Failed to open pokemon.csv" << file2.error() << endl;
 
 
 
@@ -296,6 +330,8 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 		data["specialdefence"]= pokemon_specialdefence[i];
 		data["speed"]=pokemon_speed[i];
 		data["totalpoints"]= pokemon_totalpoints[i];
+		data["height"]=pokemon_height[i];
+		data["weight"]=pokemon_weight[i];
 
 
 
