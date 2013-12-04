@@ -152,19 +152,19 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 
 		//delcaring various variables
 		QVariantMap data;
-		static QString pokemon_list[97];
-		static QString pokemon_hp[97 ];
-		static QString pokemon_attack[97];
-		static QString pokemon_defence[97];
-		static QString pokemon_specialattack[97];
-		static QString pokemon_specialdefence[97];
-		static QString pokemon_speed[97];
-		static QString pokemon_totalpoints[97];
-		static QString pokemon_height[97];
-		static QString pokemon_weight[97];
-		static QString pokemon_type_1[97];
-		static QString pokemon_type_2[97];
-		static QString pokemon_description[97];
+		QString pokemon_list[97];
+		QString pokemon_hp[97 ];
+		QString pokemon_attack[97];
+		QString pokemon_defence[97];
+		QString pokemon_specialattack[97];
+		QString pokemon_specialdefence[97];
+		QString pokemon_speed[97];
+		QString pokemon_totalpoints[97];
+		QString pokemon_height[97];
+		QString pokemon_weight[97];
+		QString pokemon_type_1[97];
+		QString pokemon_type_2[97];
+		QString pokemon_description[97];
 
 		//populating the pokemon_list array with values from temp_normal
 		for (int i = 0 ; i < counter_normal; i++){
@@ -346,35 +346,6 @@ QVariant PokemonList::data(const QVariantList& indexPath) {
 							cerr << "Failed to open pokemon.csv" << file3.error() << endl;
 							pause(); exit(0);
 						}
-
-
-						//description
-								//open different file to access description
-								 QFile file4("app/native/assets/data/pokemon_species_flavor_text.csv");
-								 QStringList description_list;
-								 static int description_counter = 1;
-
-								 if (file4.open(QIODevice::ReadOnly | QIODevice::Text)) {
-									  // Successfully opened
-									  QTextStream in(&file4); // create a text stream from the file
-									  while (!in.atEnd()) { // Read until EOF
-										  QString line = in.readLine(); // Read a line as a QString
-										  description_list= line.split("," );
-
-										  if (description_list[0].toInt() == description_counter && description_list[2]== language_number){
-											  pokemon_description[(description_counter-1)] = description_list[3];
-											  description_counter++;
-
-										  }
-									  }
-								  }
-								  else{
-									  cerr << "pokemon_species_flavor_text.csv " << file4.error() << endl;
-									  pause(); exit(0);
-								  }
-
-
-
 
 
 
