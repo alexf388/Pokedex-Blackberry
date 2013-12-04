@@ -70,11 +70,10 @@ Page {
             Label {
                 id: description // Name this as type_label so that the property alias above can set the text property of this item
                 //textStyle.fontSize: FontSize.Small
-                textFit {
-                    mode: LabelTextFitMode.FitToBounds
-                }
-
+                multiline: true
                 
+                
+                autoSize.maxLineCount: 5
             } 
         
         }
@@ -126,63 +125,77 @@ Page {
                 text: "HP: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed 
+                textStyle.fontSize: FontSize.Small
             }
             Label{
                 id: hp
+                textStyle.fontSize: FontSize.Small
             }
             //ATTACK label
             Label {
                 text: "Attack: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed 
+                textStyle.fontSize: FontSize.Small
             }
             Label{
                 id: attack
+                textStyle.fontSize: FontSize.Small
             }
             //DEFENCE label 
             Label {
                 text: "Defence: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed 
+                textStyle.fontSize: FontSize.Small
             }
             Label{
                 id: defence
+                textStyle.fontSize: FontSize.Small
             }
             //SPECIAL ATTACK label 
             Label {
                 text: "Special Attack: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed 
+                textStyle.fontSize: FontSize.Small
             }
             Label{
                 id: specialattack
+                textStyle.fontSize: FontSize.Small
             }
             //SPECIAL DEFENCE label 
             Label {
                 text: "Special Defence: "
                 textStyle.fontWeight: FontWeight.Bold
-                textStyle.color: Color.DarkRed 
+                textStyle.color: Color.DarkRed
+                textStyle.fontSize: FontSize.Small 
             }
             Label{
                 id: specialdefence
+                textStyle.fontSize: FontSize.Small
             }
             //SPEED label 
             Label {
                 text: "Speed: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed 
+                textStyle.fontSize: FontSize.Small
             }
             Label{
                 id: speed
+                textStyle.fontSize: FontSize.Small
             }
             //TOTALPOINTS label 
             Label {
                 text: "Total points: "
                 textStyle.fontWeight: FontWeight.Bold
                 textStyle.color: Color.DarkRed 
+                textStyle.fontSize: FontSize.Small
             }
             Label{
                 id: totalpoints
+                textStyle.fontSize: FontSize.Small
             }
             
             

@@ -39,6 +39,6 @@ private:
 	int type_number;
 
 	int counter_normal;
-
+	//int numberOfAllTypes = 718;
 };
 #endif /* POKEMONLIST_H_ */

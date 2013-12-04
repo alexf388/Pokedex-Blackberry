@@ -7,18 +7,23 @@
 #include <bb/cascades/RadioGroup>
 #include <bb/cascades/Label>
 #include <bb/cascades/DataModelChangeType>
+#include <bb/cascades/ListView>
 
 #include <iostream>
 #include <QString>
+#include <unistd.h>
 
 #include "pokemonlist.h"
 
 using namespace bb::cascades;
+using namespace std;
 
 using std::cerr;
 using std::endl;
 
-//values for all the sizes of types
+//DEFAULT VALUES FOR CHANGING TO ENGLISH OR JAPANESE
+//bool languageChoice=true; //true for english, false for Japanese
+int languageChoice = 9; //1 for japanese, 9 for english
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         QObject(app), m_pokemonList(0)
@@ -47,7 +52,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
 
 
-    /*
+
     /* COMPLETED: All of following should be in a separate init() function. You will need to
      * save the root pointer in a member variable so that you can access it later from
      * the init() function
@@ -108,8 +113,7 @@ void ApplicationUI::init(){
 	     * the init() function
 	     */
 
-		//DEFAULT VALUES FOR CHANGING TO ENGLISH OR JAPANESE
-		bool languageChoice=true; //true for english, false for Japanese
+
 
 	    // Populate the dropdown list of types
 	    DropDown *dropDown(0);	// pointer to hold the DropDown UI object
@@ -136,16 +140,24 @@ void ApplicationUI::init(){
 	    			//int type_counter = 1; //counts the number of types
 
 	    			 //if language selection is "9" i.e. English
-	    				if (languageChoice){
+	    				if (languageChoice ==9){
 	    					if (list_types[1] == "9" && list_types[0]!="10001" && list_types[0]!="10002"){
 	    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
 	    					}
-	    					//type_counter++;
+	    					/*
+	    					if (list_types[0]=="0" && list_types[1]=="1")//when it's done, recreate all types
+	    						dropDown->add(Option::create().text("All Types").value( "0").selected(true));
+	    					*/
 	    				}
-	    				else if (!languageChoice ){ //if language selection is "1" i.e. Japanese
+	    				else if (languageChoice ==1 ){ //if language selection is "1" i.e. Japanese
 	    					if (list_types[1] == "1" && list_types[0]!="10001" && list_types[0]!="10002"){
 	    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
 	    					}
+
+	    					/*if (list_types[1] == "0") {//special, adds japanese version of all types
+	    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
+	    					}*/
+
 	    					//type_counter++;
 	    				}
 
@@ -155,8 +167,12 @@ void ApplicationUI::init(){
 
 
 	    	}
-	    	else
+	    	else{
 	    		cerr << "Failed to type_names.csv" << file.error() << endl;
+	    		//cout <<"COULD NOT FIND  ERROR" << endl;
+	    		pause();
+	    		exit(0);
+	    	}
 
 
 	    }
@@ -194,7 +210,7 @@ void ApplicationUI::init(){
 
 	    			 QStringList list_languages = line_languages.split(",");
 
-	    			 if (languageChoice){//if english
+	    			 if (languageChoice == 9){//if english
 	    				 if (list_languages[1] == "9" && list_languages[0] == "9"){
 	    					 radio->add(Option::create().text( list_languages[2] ).objectName(list_languages[0]).value( list_languages[0] ).selected(true));
 
@@ -205,7 +221,7 @@ void ApplicationUI::init(){
 
 	    			 }
 
-	    			 else if (!languageChoice){//if japanese
+	    			 else if (!languageChoice == 1){//if japanese //NOTE !languageChoice == 1
 	    				 if (list_languages[1] == "1" && list_languages[0] == "1"){
 	    				 	 radio->add(Option::create().text( list_languages[2] ).objectName(list_languages[0]).value( list_languages[0] ).selected(true));
 
@@ -224,13 +240,17 @@ void ApplicationUI::init(){
 	    		 }
 
 	    	 }
-	    	 else
+	    	 else{
 	    		 cerr << "Failed to language_name.csv" << file.error() << endl;
+	    		 pause(); exit(0);
+	    	 }
 
 	    }
 	    else {
 	    	cerr << "failed to find pokedex_languages " << endl;
 	    }
+	    //set language for pokemon list
+	    m_pokemonList->languageSelected(languageChoice);
 
 
 	    // Set status text
@@ -249,13 +269,109 @@ void ApplicationUI::init(){
 
 
 void ApplicationUI::typeSelected(int type) {
-	cerr << "In typeSelected() with " << "type=" << type << endl;
+	ListView *pokeList(0);
+	pokeList = root->findChild<ListView*>();
+	pokeList->resetDataModel();
+
+	m_pokemonList->typeSelected(type);
+	//m_pokemonList->selectPokemon(type);
+	//m_pokemonList->setType(type);
+	//emit itemsChanged( bb::cascades::DataModelChangeType::Update);
+
+	pokeList->setDataModel(m_pokemonList);
+	//cerr << "In typeSelected() with " << "type=" << type << endl;
+
+	// Reset status text
+		    Label *status(0);	// A pointer to hold the Label UI object
+		    // Search the root QML object for a control named "status"
+		    status = root->findChild<Label *>("pokedex_status");
+		    if (status) { // did we succeed in getting a pointer to the Label UI control?
+		    	// Yes. Now set the text as appropriate
+		    	status->setText(QString("Found %1 Pokémon").arg(m_pokemonList->childCount(QVariantList())));
+		    }
+		    else {
+		    	cerr << "failed to find status " << endl;
+		    }
+
+
+
+	//cerr << "In typeSelected() with " << "type=" << type << endl;
+	//m_pokemonList->typeSelected(type);
 }
 
 void ApplicationUI::languageSelected(int language) {
-	cerr << "In languageSelected() with " << "language=" << language << endl;
+	//cerr << "In languageSelected() with " << "language=" << language << endl;
 	//sets language_number = language, so changes can be made now?
 	language_number = QString::number(language);
 	//emit itemsChanged( bb::cascades::DataModelChangeType::Init);
+
+	//reset drop down
+	DropDown *dropDown(0);	// pointer to hold the DropDown UI object
+		    // Search the root QML object for a control named "pokemon_types"
+		    dropDown = root->findChild<DropDown *>("pokemon_types");
+
+		    if (dropDown) { // did we succeed in getting a pointer to the drop down UI control?
+		        //dropDown->add(Option::create().text("Grass").value("1")); // Yes. Add a new option
+		        //dropDown->add(Option::create().text("Poison").value("2")); // Yes. Add a new option
+				// TODO: Open types.csv file, parse the csv data and create the drop down list
+				// Remove above two lines after that is done
+
+		    	//remove previous options
+		    	if (language!=languageChoice){
+		    		dropDown->removeAll();
+
+		    	QFile file("app/native/assets/data/type_names.csv");
+
+		    	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		    		QTextStream in(&file);
+
+
+
+		    		while (!in.atEnd()) {
+		    			QString line_types= in.readLine();
+		    			QStringList list_types = line_types.split(",");
+
+		    			//int type_counter = 1; //counts the number of types
+
+		    			 //if language selection is "9" i.e. English
+		    				if (language == 9){//or languageChoice?
+		    					if (list_types[1] == "9" && list_types[0]!="10001" && list_types[0]!="10002"){
+		    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
+		    					}
+		    					if (list_types[0]=="0" && list_types[0]=="1")//when it's done, recreate all types
+		    						dropDown->add(Option::create().text("All Types").value( "0"));
+
+		    				}
+		    				else if (language == 1){ //if language selection is "1" i.e. Japanese
+		    					if (list_types[1] == "1" && list_types[0]!="10001" && list_types[0]!="10002"){
+		    						dropDown->add(Option::create().text( list_types[2] ).value( list_types[0]));
+		    					}
+		    					if (list_types[0]== "18")
+		    						dropDown->add(Option::create().text( list_types[2] + "[English]").value( list_types[0]));
+
+		    					//type_counter++;
+		    				}
+
+		    		}
+
+
+		    	}
+		    	else{
+		    		cerr << "Failed to type_names.csv" << file.error() << endl;
+		    		pause(); exit(0);
+		    	}
+
+
+		    }
+		    else {
+		    	cerr << "failed to find pokemon_types " << endl;
+
+		    }
+		    }
+
+
+
+		    //make sure pokemon list is also affected by language settings
+		    m_pokemonList->languageSelected(language);
 
 }

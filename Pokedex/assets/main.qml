@@ -32,7 +32,7 @@ NavigationPane {
                 onSelectedIndexChanged: {
                     pokedex.typeSelected(selectedValue)
                     //added
-                    pokemon_list.typeSelected(selectedValue)
+                    //pokemon_list.typeSelected(selectedValue)
                     
                 }
                 options: Option {
@@ -106,7 +106,7 @@ NavigationPane {
                 onSelectedIndexChanged: {
                  	pokedex.languageSelected(selectedValue)  
                  	//added
-                    pokemon_list.languageSelected(selectedValue) 
+                    //pokemon_list.languageSelected(selectedValue) 
                 }
             }
 
